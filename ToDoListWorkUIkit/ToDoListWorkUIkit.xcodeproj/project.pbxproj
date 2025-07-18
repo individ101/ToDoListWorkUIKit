@@ -14,6 +14,7 @@
 		FABADCAE2E2ABE79008F1526 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABADCA62E2ABE79008F1526 /* ViewController.swift */; };
 		FABADCB42E2AC068008F1526 /* AddNewTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABADCB32E2AC068008F1526 /* AddNewTask.swift */; };
 		FABADCB72E2AC135008F1526 /* TodoListCD.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FABADCB52E2AC135008F1526 /* TodoListCD.xcdatamodeld */; };
+		FABADCB92E2AC272008F1526 /* CustomSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABADCB82E2AC272008F1526 /* CustomSearchBar.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		FABADCA62E2ABE79008F1526 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		FABADCB32E2AC068008F1526 /* AddNewTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewTask.swift; sourceTree = "<group>"; };
 		FABADCB62E2AC135008F1526 /* TodoListCD.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TodoListCD.xcdatamodel; sourceTree = "<group>"; };
+		FABADCB82E2AC272008F1526 /* CustomSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSearchBar.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,6 +93,7 @@
 		FABADCB12E2ABEAE008F1526 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				FABADCB82E2AC272008F1526 /* CustomSearchBar.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -177,6 +180,7 @@
 			files = (
 				FABADCAC2E2ABE79008F1526 /* AppDelegate.swift in Sources */,
 				FABADCB72E2AC135008F1526 /* TodoListCD.xcdatamodeld in Sources */,
+				FABADCB92E2AC272008F1526 /* CustomSearchBar.swift in Sources */,
 				FABADCB42E2AC068008F1526 /* AddNewTask.swift in Sources */,
 				FABADCAD2E2ABE79008F1526 /* SceneDelegate.swift in Sources */,
 				FABADCAE2E2ABE79008F1526 /* ViewController.swift in Sources */,
