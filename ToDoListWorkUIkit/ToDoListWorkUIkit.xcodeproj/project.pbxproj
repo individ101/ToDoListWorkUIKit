@@ -13,8 +13,10 @@
 		FABADCAD2E2ABE79008F1526 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABADCA52E2ABE79008F1526 /* SceneDelegate.swift */; };
 		FABADCAE2E2ABE79008F1526 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABADCA62E2ABE79008F1526 /* ViewController.swift */; };
 		FABADCB42E2AC068008F1526 /* AddNewTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABADCB32E2AC068008F1526 /* AddNewTask.swift */; };
-		FABADCB72E2AC135008F1526 /* TodoListCD.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FABADCB52E2AC135008F1526 /* TodoListCD.xcdatamodeld */; };
 		FABADCB92E2AC272008F1526 /* CustomSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABADCB82E2AC272008F1526 /* CustomSearchBar.swift */; };
+		FAC9B9F02E2ADD31001B2ECE /* TodoTask+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC9B9EE2E2ADD31001B2ECE /* TodoTask+CoreDataClass.swift */; };
+		FAC9B9F12E2ADD31001B2ECE /* TodoTask+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC9B9EF2E2ADD31001B2ECE /* TodoTask+CoreDataProperties.swift */; };
+		FAC9B9F82E2AE191001B2ECE /* CoreData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FAC9B9F62E2AE191001B2ECE /* CoreData.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,8 +28,10 @@
 		FABADCA52E2ABE79008F1526 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		FABADCA62E2ABE79008F1526 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		FABADCB32E2AC068008F1526 /* AddNewTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewTask.swift; sourceTree = "<group>"; };
-		FABADCB62E2AC135008F1526 /* TodoListCD.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TodoListCD.xcdatamodel; sourceTree = "<group>"; };
 		FABADCB82E2AC272008F1526 /* CustomSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSearchBar.swift; sourceTree = "<group>"; };
+		FAC9B9EE2E2ADD31001B2ECE /* TodoTask+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TodoTask+CoreDataClass.swift"; sourceTree = "<group>"; };
+		FAC9B9EF2E2ADD31001B2ECE /* TodoTask+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TodoTask+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		FAC9B9F72E2AE191001B2ECE /* CoreData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreData.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,8 +69,10 @@
 				FABADCAF2E2ABE7D008F1526 /* Screens */,
 				FABADCB12E2ABEAE008F1526 /* Views */,
 				FABADCB22E2ABEBB008F1526 /* NetworkManager */,
+				FABADCBE2E2AD17C008F1526 /* CoreDataManager */,
 				FABADCA02E2ABE79008F1526 /* Info.plist */,
 				FABADCB02E2ABE9C008F1526 /* Resources */,
+				FAC9B9F62E2AE191001B2ECE /* CoreData.xcdatamodeld */,
 			);
 			path = ToDoListWorkUIkit;
 			sourceTree = "<group>";
@@ -85,7 +91,6 @@
 			children = (
 				FABADC9F2E2ABE79008F1526 /* Assets.xcassets */,
 				FABADCA22E2ABE79008F1526 /* LaunchScreen.storyboard */,
-				FABADCB52E2AC135008F1526 /* TodoListCD.xcdatamodeld */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -103,6 +108,15 @@
 			children = (
 			);
 			path = NetworkManager;
+			sourceTree = "<group>";
+		};
+		FABADCBE2E2AD17C008F1526 /* CoreDataManager */ = {
+			isa = PBXGroup;
+			children = (
+				FAC9B9EE2E2ADD31001B2ECE /* TodoTask+CoreDataClass.swift */,
+				FAC9B9EF2E2ADD31001B2ECE /* TodoTask+CoreDataProperties.swift */,
+			);
+			path = CoreDataManager;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -178,11 +192,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FAC9B9F82E2AE191001B2ECE /* CoreData.xcdatamodeld in Sources */,
 				FABADCAC2E2ABE79008F1526 /* AppDelegate.swift in Sources */,
-				FABADCB72E2AC135008F1526 /* TodoListCD.xcdatamodeld in Sources */,
 				FABADCB92E2AC272008F1526 /* CustomSearchBar.swift in Sources */,
 				FABADCB42E2AC068008F1526 /* AddNewTask.swift in Sources */,
 				FABADCAD2E2ABE79008F1526 /* SceneDelegate.swift in Sources */,
+				FAC9B9F02E2ADD31001B2ECE /* TodoTask+CoreDataClass.swift in Sources */,
+				FAC9B9F12E2ADD31001B2ECE /* TodoTask+CoreDataProperties.swift in Sources */,
 				FABADCAE2E2ABE79008F1526 /* ViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -213,7 +229,6 @@
 				INFOPLIST_FILE = ToDoListWorkUIkit/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 15;
@@ -242,7 +257,6 @@
 				INFOPLIST_FILE = ToDoListWorkUIkit/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 15;
@@ -404,13 +418,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		FABADCB52E2AC135008F1526 /* TodoListCD.xcdatamodeld */ = {
+		FAC9B9F62E2AE191001B2ECE /* CoreData.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				FABADCB62E2AC135008F1526 /* TodoListCD.xcdatamodel */,
+				FAC9B9F72E2AE191001B2ECE /* CoreData.xcdatamodel */,
 			);
-			currentVersion = FABADCB62E2AC135008F1526 /* TodoListCD.xcdatamodel */;
-			path = TodoListCD.xcdatamodeld;
+			currentVersion = FAC9B9F72E2AE191001B2ECE /* CoreData.xcdatamodel */;
+			path = CoreData.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
