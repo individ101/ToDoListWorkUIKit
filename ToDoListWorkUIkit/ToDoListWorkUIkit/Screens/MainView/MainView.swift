@@ -82,45 +82,44 @@ extension MainView: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView,
-                       cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-            guard let cell = tableView.dequeueReusableCell(
-                withIdentifier: TodoCell.identifier,
-                for: indexPath
-            ) as? TodoCell else { return UITableViewCell() }
-
-            let task = viewModel.tasks[indexPath.row]
-            cell.configure(with: task)
-
-            cell.checkmarTapped = { [weak self] in
-                guard let self else { return }
-                self.viewModel.toggle(at: indexPath.row) { [weak self] in
-                    self?.tableView.reloadRows(at: [indexPath], with: .automatic)
-                }
+                   cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: TodoCell.identifier,
+            for: indexPath
+        ) as? TodoCell else { return UITableViewCell() }
+        
+        let task = viewModel.tasks[indexPath.row]
+        cell.configure(with: task)
+        
+        cell.checkmarTapped = { [weak self] in
+            guard let self else { return }
+            self.viewModel.toggle(at: indexPath.row) { [weak self] in
+                self?.tableView.reloadRows(at: [indexPath], with: .automatic)
             }
-
-            return cell
         }
+        return cell
+    }
     
     func tableView(_ tableView: UITableView,
-                       didSelectRowAt indexPath: IndexPath) {
-            let vc = AddNewTask()
-            vc.task = viewModel.tasks[indexPath.row]
-            vc.onUpdate = { [weak self] task, title, text in
-                self?.viewModel.update(task: task, title: title, text: text) {
-                    self?.tableView.reloadData()
-                }
+                   didSelectRowAt indexPath: IndexPath) {
+        let vc = AddNewTask()
+        vc.task = viewModel.tasks[indexPath.row]
+        vc.onUpdate = { [weak self] task, title, text in
+            self?.viewModel.update(task: task, title: title, text: text) {
+                self?.tableView.reloadData()
             }
-            navigationController?.pushViewController(vc, animated: true)
         }
+        navigationController?.pushViewController(vc, animated: true)
+    }
     
     func tableView(_ tableView: UITableView,
-                      commit editingStyle: UITableViewCell.EditingStyle,
-                      forRowAt indexPath: IndexPath) {
-           guard editingStyle == .delete else { return }
-           viewModel.delete(at: indexPath.row) { [weak self] in
-               self?.tableView.deleteRows(at: [indexPath], with: .automatic)
-           }
-       }
+                   commit editingStyle: UITableViewCell.EditingStyle,
+                   forRowAt indexPath: IndexPath) {
+        guard editingStyle == .delete else { return }
+        viewModel.delete(at: indexPath.row) { [weak self] in
+            self?.tableView.deleteRows(at: [indexPath], with: .automatic)
+        }
+    }
 }
 
 extension MainView: UISearchBarDelegate {
@@ -134,11 +133,11 @@ extension MainView: UISearchBarDelegate {
             }
         }
     }
-
+    
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
     }
-
+    
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.text = ""
         viewModel.load { [weak self] in self?.tableView.reloadData() }

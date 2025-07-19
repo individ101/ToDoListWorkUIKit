@@ -107,29 +107,31 @@ class CoreDataManager {
         }
     
     func searchTasks(query: String, completion: @escaping ([TodoTask]) -> Void) {
-           let trimmed = query.trimmingCharacters(in: .whitespacesAndNewlines)
-           guard !trimmed.isEmpty else {
-               fetchAllTasks(completion: completion)
-               return
-           }
-           let request: NSFetchRequest<TodoTask> = TodoTask.fetchRequest()
-           request.predicate = NSPredicate(format: "(title CONTAINS[cd] %@) OR (text CONTAINS[cd] %@)", trimmed, trimmed)
-           request.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
-           bgContext.perform {
-               let ids: [NSManagedObjectID]
-               do {
-                   let found = try self.bgContext.fetch(request)
-                   ids = found.map { $0.objectID }
-               } catch {
-                   ids = []
-               }
-               DispatchQueue.main.async {
-                   let viewContext = self.persistentContainer.viewContext
-                   let result = ids.compactMap { viewContext.object(with: $0) as? TodoTask }
-                   completion(result)
-               }
-           }
-       }
+        let trimmedQuery = query.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        guard !trimmedQuery.isEmpty else {
+            fetchAllTasks(completion: completion)
+            return
+        }
+        
+        let request: NSFetchRequest<TodoTask> = TodoTask.fetchRequest()
+        request.predicate = NSPredicate(format: "title CONTAINS[cd] %@ OR text CONTAINS[cd] %@", trimmedQuery, trimmedQuery)
+        request.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
+        
+        bgContext.perform {
+            do {
+                let tasks = try self.bgContext.fetch(request)
+                DispatchQueue.main.async {
+                    let viewContext = self.persistentContainer.viewContext
+                    let result = tasks.compactMap { viewContext.object(with: $0.objectID) as? TodoTask }
+                    completion(result)
+                }
+            } catch {
+                print("Ошибка поиска задач: \(error.localizedDescription)")
+                DispatchQueue.main.async { completion([]) }
+            }
+        }
+    }
     
     private func save(bg: Bool, completion: (() -> ())?) {
         let context = bg ? bgContext : persistentContainer.viewContext
@@ -138,7 +140,9 @@ class CoreDataManager {
             DispatchQueue.main.async { completion?() }
         }
         catch {
+            print("Ошибка сохранения Core Data: \(error.localizedDescription)")
             DispatchQueue.main.async { completion?() }
         }
     }
+    
 }
