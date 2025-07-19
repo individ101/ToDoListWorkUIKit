@@ -79,7 +79,7 @@ class AddNewTask: UIViewController {
             
             btn.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             btn.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            btn.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            btn.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
         ])
     }
 
