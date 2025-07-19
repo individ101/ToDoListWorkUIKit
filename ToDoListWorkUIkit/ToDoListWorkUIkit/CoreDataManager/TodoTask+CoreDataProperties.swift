@@ -25,5 +25,17 @@ extension TodoTask {
 }
 
 extension TodoTask : Identifiable {
-
+    func updateTask(title: String, text: String) {
+        self.title = title
+        self.text = text
+        self.creationDate = Date()
+        
+        try? managedObjectContext?.save()
+    }
+    
+    func deleteTask() {
+        managedObjectContext?.delete(self)
+        try? managedObjectContext?.save()
+    }
+    
 }
