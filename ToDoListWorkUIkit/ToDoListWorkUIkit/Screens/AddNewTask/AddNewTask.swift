@@ -7,80 +7,120 @@
 
 import UIKit
 
-class AddNewTask: UIViewController {
-    
-    private let manager = CoreDataManager.shared
+final class AddNewTask: UIViewController {
+
+    // MARK: - I/O
     var task: TodoTask?
-    
-    lazy var titleField: UITextField = {
+    var onCreate: ((_ title: String, _ text: String) -> Void)?
+    var onUpdate: ((_ task: TodoTask, _ title: String, _ text: String) -> Void)?
+
+    // MARK: - UI Elements
+    private let dateLabel: UILabel = {
+        let l = UILabel()
+        l.textColor = .lightGray
+        l.font = .systemFont(ofSize: 12, weight: .regular)
+        l.translatesAutoresizingMaskIntoConstraints = false
+        return l
+    }()
+
+    private let titleField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "Добавьте задачу"
-        tf.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        tf.font = UIFont.systemFont(ofSize: 17)
-        tf.backgroundColor = .systemGray
+        tf.font = .systemFont(ofSize: 34, weight: .bold)
+        tf.textColor = .white
+        tf.tintColor = .systemGreen
+        tf.borderStyle = .none
         tf.translatesAutoresizingMaskIntoConstraints = false
         return tf
     }()
-    
-    lazy var textView: UITextView = {
+
+    private let notesView: UITextView = {
         let tv = UITextView()
-        tv.heightAnchor.constraint(equalToConstant: 100).isActive = true
-        tv.backgroundColor = .systemGray
-        tv.font = UIFont.systemFont(ofSize: 12)
+        tv.font = .systemFont(ofSize: 16, weight: .regular)
+        tv.layer.borderColor = UIColor.darkGray.cgColor
+        tv.layer.borderWidth = 1
+        tv.layer.cornerRadius = 8
+        tv.textColor = .white
+        tv.tintColor = .systemGreen
+        tv.backgroundColor = .black
+        tv.isScrollEnabled = false
         tv.translatesAutoresizingMaskIntoConstraints = false
         return tv
     }()
-    
-    lazy var btn: UIButton = {
-        let btn = UIButton(primaryAction: action)
-        btn.setTitle("Сохранить", for: .normal)
-        btn.translatesAutoresizingMaskIntoConstraints = false
-        return btn
+
+    private let saveButton: UIButton = {
+        let b = UIButton(type: .system)
+        b.setTitle("Сохранить", for: .normal)
+        b.titleLabel?.font = .boldSystemFont(ofSize: 18)
+        b.setTitleColor(.black, for: .normal)
+        b.backgroundColor = .systemGreen
+        b.layer.cornerRadius = 12
+        b.translatesAutoresizingMaskIntoConstraints = false
+        return b
     }()
-    
-    lazy var action = UIAction { _ in
-        if self.task == nil {
-            self.manager.createNewTask(title: self.titleField.text ?? "", text: self.textView.text ?? "" )
-        } else {
-            self.task?.updateTask(title: self.titleField.text ?? "", text: self.textView.text ?? "")
-        }
-        self.navigationController?.popViewController(animated: true)
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
-        title = "Добавление новой задачи"
-        
-        view.addSubview(titleField)
-        view.addSubview(textView)
-        view.addSubview(btn)
-        
-        setupConstraints()
-        
-        if task != nil {
-            title = "Обновить"
-            titleField.text = task?.title
-            textView.text = task?.text
-        } else {
-            title = "Добавление новой задачи"
-        }
-    }
-    
-    private func setupConstraints() {
-        NSLayoutConstraint.activate([
-            titleField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            titleField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            titleField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            
-            textView.topAnchor.constraint(equalTo: titleField.bottomAnchor, constant: 10),
-            textView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            textView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            
-            btn.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            btn.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            btn.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
-        ])
+        setup()
     }
 
+    // MARK: - Setup
+    private func setup() {
+        view.addSubview(titleField)
+        view.addSubview(dateLabel)
+        view.addSubview(notesView)
+        view.addSubview(saveButton)
+
+        NSLayoutConstraint.activate([
+
+            titleField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 18),
+            titleField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            titleField.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
+            titleField.heightAnchor.constraint(equalToConstant: 41),
+            
+            dateLabel.topAnchor.constraint(equalTo: titleField.bottomAnchor, constant: 8),
+            dateLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+
+            notesView.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 16),
+            notesView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            notesView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            notesView.heightAnchor.constraint(greaterThanOrEqualToConstant: 66),
+
+            saveButton.topAnchor.constraint(equalTo: notesView.bottomAnchor, constant: 45),
+            saveButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12),
+            saveButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
+            saveButton.heightAnchor.constraint(equalToConstant: 50)
+        ])
+
+       
+        dateLabel.text = task?.formattedDate ?? Date().shortSlash
+
+        if let task {
+            title = "Обновить"
+            titleField.text = task.title
+            notesView.text = task.text
+        } else {
+            title = "Новая задача"
+        }
+
+        saveButton.addTarget(self, action: #selector(saveTapped), for: .touchUpInside)
+    }
+
+    // MARK: - Actions
+    @objc private func saveTapped() {
+        let t   = (titleField.text ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+        let txt = (notesView.text   ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+
+        guard !t.isEmpty else {
+            titleField.becomeFirstResponder(); return
+        }
+
+        if let task = task {
+            onUpdate?(task, t, txt)
+        } else {
+            onCreate?(t, txt)
+        }
+        navigationController?.popViewController(animated: true)
+    }
 }

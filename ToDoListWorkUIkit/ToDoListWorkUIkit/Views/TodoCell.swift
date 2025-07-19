@@ -58,17 +58,19 @@ class TodoCell: UITableViewCell {
         return stack
     }()
     
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
-        backgroundColor = .black
         setupViews()
         setupConstraints()
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(checkmarkTappedAction))
         //        checkmarkImageView.isUserInteractionEnabled = true
         checkmarkImageView.addGestureRecognizer(tap)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     private func setupViews() {
@@ -135,12 +137,5 @@ class TodoCell: UITableViewCell {
             checkmarkImageView.image = UIImage(systemName: "circle")
             checkmarkImageView.tintColor = .systemGray
         }
-    }
-    
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        
-        // Configure the view for the selected state
-    }
-    
+    }    
 }

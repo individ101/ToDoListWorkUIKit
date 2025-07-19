@@ -8,10 +8,8 @@
 import UIKit
 
 class MainView: UIViewController {
-    private let manager = CoreDataManager.shared
+    private let viewModel = TodoViewModel()
     private let searchBar = CustomSearchBar()
-    private var filteredTasks: [TodoTask] = []
-    private var isSearching = false
     
     lazy var tableView: UITableView = {
         let table = UITableView(frame: .zero, style: .plain)
@@ -32,7 +30,6 @@ class MainView: UIViewController {
         return btn
     }()
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Задачи"
@@ -46,7 +43,8 @@ class MainView: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        tableView.reloadData()
+        super.viewWillAppear(animated)
+        viewModel.load { [weak self] in self?.tableView.reloadData() }
     }
     
     private func setupConstraints() {
@@ -69,72 +67,81 @@ class MainView: UIViewController {
     
     @objc private func addButtonTapped() {
         let addVC = AddNewTask()
+        addVC.onCreate = { [weak self] title, text in
+            self?.viewModel.create(title: title, text: text) {
+                self?.tableView.reloadData()
+            }
+        }
         navigationController?.pushViewController(addVC, animated: true)
     }
-    
 }
 
 extension MainView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        isSearching ? filteredTasks.count : manager.tasks.count
+        return viewModel.tasks.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: TodoCell.identifier, for: indexPath) as? TodoCell else { return UITableViewCell()}
-        
-        let task = isSearching ? filteredTasks[indexPath.row] : manager.tasks[indexPath.row]
-        cell.configure(with: task)
-        cell.checkmarTapped = { [weak self] in
-            guard let self else { return }
-            task.isCompleted.toggle()
-            self.manager.saveContext()
-            self.tableView.reloadRows(at: [indexPath], with: .automatic)
+    func tableView(_ tableView: UITableView,
+                       cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: TodoCell.identifier,
+                for: indexPath
+            ) as? TodoCell else { return UITableViewCell() }
+
+            let task = viewModel.tasks[indexPath.row]
+            cell.configure(with: task)
+
+            cell.checkmarTapped = { [weak self] in
+                guard let self else { return }
+                self.viewModel.toggle(at: indexPath.row) { [weak self] in
+                    self?.tableView.reloadRows(at: [indexPath], with: .automatic)
+                }
+            }
+
+            return cell
         }
-        return cell
-    }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let vc = AddNewTask()
-        vc.task = manager.tasks[indexPath.row]
-        navigationController?.pushViewController(vc, animated: true)
-    }
-    
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            let task = manager.tasks[indexPath.row]
-            task.deleteTask()
-            manager.tasks.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .automatic)
+    func tableView(_ tableView: UITableView,
+                       didSelectRowAt indexPath: IndexPath) {
+            let vc = AddNewTask()
+            vc.task = viewModel.tasks[indexPath.row]
+            vc.onUpdate = { [weak self] task, title, text in
+                self?.viewModel.update(task: task, title: title, text: text) {
+                    self?.tableView.reloadData()
+                }
+            }
+            navigationController?.pushViewController(vc, animated: true)
         }
-    }
+    
+    func tableView(_ tableView: UITableView,
+                      commit editingStyle: UITableViewCell.EditingStyle,
+                      forRowAt indexPath: IndexPath) {
+           guard editingStyle == .delete else { return }
+           viewModel.delete(at: indexPath.row) { [weak self] in
+               self?.tableView.deleteRows(at: [indexPath], with: .automatic)
+           }
+       }
 }
 
 extension MainView: UISearchBarDelegate {
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        let searchText = searchText.trimmingCharacters(in: .whitespaces).lowercased()
-        
-        if searchText.isEmpty {
-            isSearching = false
-            filteredTasks = []
+    func searchBar(_ searchBar: UISearchBar,
+                   textDidChange searchText: String) {
+        if searchText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            viewModel.load { [weak self] in self?.tableView.reloadData() }
         } else {
-            isSearching = true
-            filteredTasks = manager.tasks.filter { task in
-                return task.title?.lowercased().contains(searchText) ?? false ||
-                task.text?.lowercased().contains(searchText) ?? false
+            viewModel.search(text: searchText) { [weak self] in
+                self?.tableView.reloadData()
             }
         }
-        tableView.reloadData()
     }
-    
+
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
     }
-    
+
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.text = ""
-        isSearching = false
-        filteredTasks = []
+        viewModel.load { [weak self] in self?.tableView.reloadData() }
         searchBar.resignFirstResponder()
-        tableView.reloadData()
     }
 }
