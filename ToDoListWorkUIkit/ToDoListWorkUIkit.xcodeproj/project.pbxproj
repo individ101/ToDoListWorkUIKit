@@ -18,6 +18,7 @@
 		FAC9B9F12E2ADD31001B2ECE /* TodoTask+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC9B9EF2E2ADD31001B2ECE /* TodoTask+CoreDataProperties.swift */; };
 		FAC9B9F82E2AE191001B2ECE /* CoreData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FAC9B9F62E2AE191001B2ECE /* CoreData.xcdatamodeld */; };
 		FAC9B9FA2E2AF371001B2ECE /* TodoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC9B9F92E2AF371001B2ECE /* TodoCell.swift */; };
+		FAC9B9FC2E2B840E001B2ECE /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC9B9FB2E2B840E001B2ECE /* CoreDataManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		FAC9B9EF2E2ADD31001B2ECE /* TodoTask+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TodoTask+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		FAC9B9F72E2AE191001B2ECE /* CoreData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreData.xcdatamodel; sourceTree = "<group>"; };
 		FAC9B9F92E2AF371001B2ECE /* TodoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoCell.swift; sourceTree = "<group>"; };
+		FAC9B9FB2E2B840E001B2ECE /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +120,7 @@
 			children = (
 				FAC9B9EE2E2ADD31001B2ECE /* TodoTask+CoreDataClass.swift */,
 				FAC9B9EF2E2ADD31001B2ECE /* TodoTask+CoreDataProperties.swift */,
+				FAC9B9FB2E2B840E001B2ECE /* CoreDataManager.swift */,
 			);
 			path = CoreDataManager;
 			sourceTree = "<group>";
@@ -203,6 +206,7 @@
 				FABADCAD2E2ABE79008F1526 /* SceneDelegate.swift in Sources */,
 				FAC9B9F02E2ADD31001B2ECE /* TodoTask+CoreDataClass.swift in Sources */,
 				FAC9B9F12E2ADD31001B2ECE /* TodoTask+CoreDataProperties.swift in Sources */,
+				FAC9B9FC2E2B840E001B2ECE /* CoreDataManager.swift in Sources */,
 				FABADCAE2E2ABE79008F1526 /* ViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

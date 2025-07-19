@@ -111,6 +111,7 @@ class TodoCell: UITableViewCell {
     
     func configure(with todo: TodoTask) {
         self.todo = todo
+        dateLabel.text = todo.formattedDate
         
         if todo.isCompleted {
             titleLabel.attributedText = NSAttributedString(
