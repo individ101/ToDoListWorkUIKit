@@ -54,7 +54,8 @@ class CoreDataManager {
     }
     
     func createTask(title: String, text: String, completion: (() -> Void)? = nil) {
-        bgContext.perform {
+        bgContext.perform { [weak self] in
+            guard let self else { return }
             let task = TodoTask(context: self.bgContext)
             task.id = UUID().uuidString
             task.title = title
@@ -142,6 +143,40 @@ class CoreDataManager {
         catch {
             print("Ошибка сохранения Core Data: \(error.localizedDescription)")
             DispatchQueue.main.async { completion?() }
+        }
+    }
+    
+}
+
+extension CoreDataManager {
+    func syncTasksFromApi(completion: @escaping() -> ()) {
+        NetworkManager.shared.fetchTodo { [weak self] result in
+            guard let self = self else {
+                completion()
+                return
+            }
+            switch result {
+            case .success(let todoResponse):
+                self.bgContext.perform { [weak self] in
+                    guard let self else {
+                        DispatchQueue.main.async { completion() }
+                        return
+                    }
+                    
+                    for todoItem in todoResponse.todos {
+                        let task = TodoTask(context: self.bgContext)
+                        task.id = String(todoItem.id)
+                        task.title = todoItem.todo
+                        task.text = ""
+                        task.creationDate = Date()
+                        task.isCompleted = todoItem.completed
+                    }
+                    self.save(bg: true, completion: completion)
+                }
+            case .failure(let error):
+                print("Ошибка загрузки задач из API: \(error)")
+                completion()
+            }
         }
     }
     

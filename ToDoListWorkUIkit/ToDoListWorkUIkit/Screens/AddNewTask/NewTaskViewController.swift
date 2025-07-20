@@ -7,54 +7,54 @@
 
 import UIKit
 
-final class AddNewTask: UIViewController {
+final class NewTaskViewController: UIViewController {
     
     var task: TodoTask?
     var onCreate: ((_ title: String, _ text: String) -> Void)?
     var onUpdate: ((_ task: TodoTask, _ title: String, _ text: String) -> Void)?
     
     private let dateLabel: UILabel = {
-        let l = UILabel()
-        l.textColor = .lightGray
-        l.font = .systemFont(ofSize: 12, weight: .regular)
-        l.translatesAutoresizingMaskIntoConstraints = false
-        return l
+        let label = UILabel()
+        label.textColor = .lightGray
+        label.font = .systemFont(ofSize: 12, weight: .regular)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }()
     
     private let titleField: UITextField = {
-        let tf = UITextField()
-        tf.placeholder = "Добавьте задачу"
-        tf.font = .systemFont(ofSize: 34, weight: .bold)
-        tf.textColor = .white
-        tf.tintColor = .systemGreen
-        tf.borderStyle = .none
-        tf.translatesAutoresizingMaskIntoConstraints = false
-        return tf
+        let titleField = UITextField()
+        titleField.placeholder = "Добавьте задачу"
+        titleField.font = .systemFont(ofSize: 34, weight: .bold)
+        titleField.textColor = .white
+        titleField.tintColor = .systemGreen
+        titleField.borderStyle = .none
+        titleField.translatesAutoresizingMaskIntoConstraints = false
+        return titleField
     }()
     
     private let notesView: UITextView = {
-        let tv = UITextView()
-        tv.font = .systemFont(ofSize: 16, weight: .regular)
-        tv.layer.borderColor = UIColor.darkGray.cgColor
-        tv.layer.borderWidth = 1
-        tv.layer.cornerRadius = 8
-        tv.textColor = .white
-        tv.tintColor = .systemGreen
-        tv.backgroundColor = .black
-        tv.isScrollEnabled = false
-        tv.translatesAutoresizingMaskIntoConstraints = false
-        return tv
+        let textView = UITextView()
+        textView.font = .systemFont(ofSize: 16, weight: .regular)
+        textView.layer.borderColor = UIColor.darkGray.cgColor
+        textView.layer.borderWidth = 1
+        textView.layer.cornerRadius = 8
+        textView.textColor = .white
+        textView.tintColor = .systemGreen
+        textView.backgroundColor = .black
+        textView.isScrollEnabled = false
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        return textView
     }()
     
     private let saveButton: UIButton = {
-        let b = UIButton(type: .system)
-        b.setTitle("Сохранить", for: .normal)
-        b.titleLabel?.font = .boldSystemFont(ofSize: 18)
-        b.setTitleColor(.black, for: .normal)
-        b.backgroundColor = .systemGreen
-        b.layer.cornerRadius = 12
-        b.translatesAutoresizingMaskIntoConstraints = false
-        return b
+        let button = UIButton(type: .system)
+        button.setTitle("Сохранить", for: .normal)
+        button.titleLabel?.font = .boldSystemFont(ofSize: 18)
+        button.setTitleColor(.black, for: .normal)
+        button.backgroundColor = .systemGreen
+        button.layer.cornerRadius = 12
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
     }()
     
     override func viewDidLoad() {
@@ -104,9 +104,13 @@ final class AddNewTask: UIViewController {
     
     @objc private func saveTapped() {
         let title = titleField.text ?? ""
-        let txt = notesView.text   ?? ""
+        let txt = notesView.text ?? ""
         
-        task == nil ? onCreate?(title, txt) : onUpdate?(task!, title, txt)
+        if let task = task {
+            onUpdate?(task, title, txt)
+        } else {
+            onCreate?(title, txt)
+        }
         
         navigationController?.popViewController(animated: true)
     }

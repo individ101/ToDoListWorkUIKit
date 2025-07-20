@@ -7,15 +7,29 @@
 
 import Foundation
 
-final class TodoViewModel {
+final class MainViewModel {
     private let manager = CoreDataManager.shared
     private(set) var tasks: [TodoTask] = []
     private var searchItem: DispatchWorkItem?
+    private let searchQueue = DispatchQueue(label: "com.todo.search", qos: .userInitiated)
+    private let hasLoadedFromAPIKey = "hasLoadedFromAPI"
     
     func load(completion: @escaping () -> Void) {
         manager.fetchAllTasks { [weak self] arr in
             self?.tasks = arr
             completion()
+        }
+    }
+    
+    func loadFromAPI(completion: @escaping () -> Void) {
+        let hasLoaded = UserDefaults.standard.bool(forKey: hasLoadedFromAPIKey)
+        if hasLoaded {
+            load(completion: completion)
+        } else {
+            manager.syncTasksFromApi { [weak self] in
+                UserDefaults.standard.set(true, forKey: self?.hasLoadedFromAPIKey ?? "")
+                self?.load(completion: completion)
+            }
         }
     }
     
@@ -52,6 +66,6 @@ final class TodoViewModel {
             }
         }
         searchItem = item
-        DispatchQueue.global(qos: .userInitiated).asyncAfter(deadline: .now() + 0.35, execute: item)
+        searchQueue.asyncAfter(deadline: .now() + 0.35, execute: item)
     }
 }

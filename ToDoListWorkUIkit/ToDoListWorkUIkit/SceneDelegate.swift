@@ -17,12 +17,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let window = UIWindow(windowScene: windowScene)
         window.overrideUserInterfaceStyle = .dark
-        let viewController = MainView()
+        let viewController = MainViewController()
         let navController = UINavigationController(rootViewController: viewController)
         window.rootViewController = navController
         self.window = window
         window.makeKeyAndVisible()
-       
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

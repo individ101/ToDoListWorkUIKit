@@ -7,27 +7,36 @@
 
 import UIKit
 
-class MainView: UIViewController {
-    private let viewModel = TodoViewModel()
+class MainViewController: UIViewController {
+    private let viewModel: MainViewModel
     private let searchBar = CustomSearchBar()
     
+    init(viewModel: MainViewModel = MainViewModel()) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     lazy var tableView: UITableView = {
-        let table = UITableView(frame: .zero, style: .plain)
-        table.separatorStyle = .singleLine
-        table.separatorColor = .systemGray
-        table.rowHeight = UITableView.automaticDimension
-        table.translatesAutoresizingMaskIntoConstraints = false
-        table.dataSource = self
-        table.delegate = self
-        table.register(TodoCell.self, forCellReuseIdentifier: TodoCell.identifier)
-        return table
+        let tableView = UITableView(frame: .zero, style: .plain)
+        tableView.separatorStyle = .singleLine
+        tableView.separatorColor = .systemGray
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.register(TodoCell.self, forCellReuseIdentifier: TodoCell.identifier)
+        return tableView
     }()
     
     lazy var addButton: UIButton = {
-        let btn = UIButton()
-        btn.setImage(UIImage(named: "addButton"), for: .normal)
-        btn.translatesAutoresizingMaskIntoConstraints = false
-        return btn
+        let button = UIButton()
+        button.setImage(UIImage(named: "addButton"), for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
     }()
     
     override func viewDidLoad() {
@@ -44,7 +53,10 @@ class MainView: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewModel.load { [weak self] in self?.tableView.reloadData() }
+        viewModel.loadFromAPI { [weak self] in
+            self?.reloadTableView()
+        }
+        
     }
     
     private func setupConstraints() {
@@ -66,17 +78,23 @@ class MainView: UIViewController {
     }
     
     @objc private func addButtonTapped() {
-        let addVC = AddNewTask()
+        let addVC = NewTaskViewController()
         addVC.onCreate = { [weak self] title, text in
             self?.viewModel.create(title: title, text: text) {
-                self?.tableView.reloadData()
+                self?.reloadTableView()
             }
         }
         navigationController?.pushViewController(addVC, animated: true)
     }
+    
+    private func reloadTableView() {
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+    }
 }
 
-extension MainView: UITableViewDelegate, UITableViewDataSource {
+extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.tasks.count
     }
@@ -102,11 +120,11 @@ extension MainView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView,
                    didSelectRowAt indexPath: IndexPath) {
-        let vc = AddNewTask()
+        let vc = NewTaskViewController()
         vc.task = viewModel.tasks[indexPath.row]
         vc.onUpdate = { [weak self] task, title, text in
             self?.viewModel.update(task: task, title: title, text: text) {
-                self?.tableView.reloadData()
+                self?.reloadTableView()
             }
         }
         navigationController?.pushViewController(vc, animated: true)
@@ -122,14 +140,14 @@ extension MainView: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
-extension MainView: UISearchBarDelegate {
+extension MainViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar,
                    textDidChange searchText: String) {
         if searchText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             viewModel.load { [weak self] in self?.tableView.reloadData() }
         } else {
             viewModel.search(text: searchText) { [weak self] in
-                self?.tableView.reloadData()
+                self?.reloadTableView()
             }
         }
     }
@@ -140,7 +158,7 @@ extension MainView: UISearchBarDelegate {
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.text = ""
-        viewModel.load { [weak self] in self?.tableView.reloadData() }
+        viewModel.load { [weak self] in self?.reloadTableView() }
         searchBar.resignFirstResponder()
     }
 }

@@ -11,11 +11,10 @@
 		FABADCAA2E2ABE79008F1526 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FABADCA22E2ABE79008F1526 /* LaunchScreen.storyboard */; };
 		FABADCAC2E2ABE79008F1526 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABADC9E2E2ABE79008F1526 /* AppDelegate.swift */; };
 		FABADCAD2E2ABE79008F1526 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABADCA52E2ABE79008F1526 /* SceneDelegate.swift */; };
-		FABADCAE2E2ABE79008F1526 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABADCA62E2ABE79008F1526 /* MainView.swift */; };
-		FABADCB42E2AC068008F1526 /* AddNewTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABADCB32E2AC068008F1526 /* AddNewTask.swift */; };
+		FABADCAE2E2ABE79008F1526 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABADCA62E2ABE79008F1526 /* MainViewController.swift */; };
+		FABADCB42E2AC068008F1526 /* NewTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABADCB32E2AC068008F1526 /* NewTaskViewController.swift */; };
 		FABADCB92E2AC272008F1526 /* CustomSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FABADCB82E2AC272008F1526 /* CustomSearchBar.swift */; };
 		FAC9B9F02E2ADD31001B2ECE /* TodoTask+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC9B9EE2E2ADD31001B2ECE /* TodoTask+CoreDataClass.swift */; };
-		FAC9B9F12E2ADD31001B2ECE /* TodoTask+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC9B9EF2E2ADD31001B2ECE /* TodoTask+CoreDataProperties.swift */; };
 		FAC9B9F82E2AE191001B2ECE /* CoreData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FAC9B9F62E2AE191001B2ECE /* CoreData.xcdatamodeld */; };
 		FAC9B9FA2E2AF371001B2ECE /* TodoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC9B9F92E2AF371001B2ECE /* TodoCell.swift */; };
 		FAC9B9FC2E2B840E001B2ECE /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC9B9FB2E2B840E001B2ECE /* CoreDataManager.swift */; };
@@ -32,11 +31,10 @@
 		FABADCA02E2ABE79008F1526 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FABADCA12E2ABE79008F1526 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FABADCA52E2ABE79008F1526 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		FABADCA62E2ABE79008F1526 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
-		FABADCB32E2AC068008F1526 /* AddNewTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewTask.swift; sourceTree = "<group>"; };
+		FABADCA62E2ABE79008F1526 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		FABADCB32E2AC068008F1526 /* NewTaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTaskViewController.swift; sourceTree = "<group>"; };
 		FABADCB82E2AC272008F1526 /* CustomSearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSearchBar.swift; sourceTree = "<group>"; };
 		FAC9B9EE2E2ADD31001B2ECE /* TodoTask+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TodoTask+CoreDataClass.swift"; sourceTree = "<group>"; };
-		FAC9B9EF2E2ADD31001B2ECE /* TodoTask+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TodoTask+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		FAC9B9F72E2AE191001B2ECE /* CoreData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreData.xcdatamodel; sourceTree = "<group>"; };
 		FAC9B9F92E2AF371001B2ECE /* TodoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoCell.swift; sourceTree = "<group>"; };
 		FAC9B9FB2E2B840E001B2ECE /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
@@ -130,7 +128,6 @@
 			isa = PBXGroup;
 			children = (
 				FAC9B9EE2E2ADD31001B2ECE /* TodoTask+CoreDataClass.swift */,
-				FAC9B9EF2E2ADD31001B2ECE /* TodoTask+CoreDataProperties.swift */,
 				FAC9B9FB2E2B840E001B2ECE /* CoreDataManager.swift */,
 			);
 			path = CoreDataManager;
@@ -139,7 +136,7 @@
 		FAC9B9FD2E2BCE85001B2ECE /* MainView */ = {
 			isa = PBXGroup;
 			children = (
-				FABADCA62E2ABE79008F1526 /* MainView.swift */,
+				FABADCA62E2ABE79008F1526 /* MainViewController.swift */,
 				FAC9BF062E2BCF46001B2ECE /* MainViewModel.swift */,
 			);
 			path = MainView;
@@ -148,7 +145,7 @@
 		FAC9B9FE2E2BCEA1001B2ECE /* AddNewTask */ = {
 			isa = PBXGroup;
 			children = (
-				FABADCB32E2AC068008F1526 /* AddNewTask.swift */,
+				FABADCB32E2AC068008F1526 /* NewTaskViewController.swift */,
 			);
 			path = AddNewTask;
 			sourceTree = "<group>";
@@ -245,16 +242,15 @@
 				FAC9B9F82E2AE191001B2ECE /* CoreData.xcdatamodeld in Sources */,
 				FABADCAC2E2ABE79008F1526 /* AppDelegate.swift in Sources */,
 				FABADCB92E2AC272008F1526 /* CustomSearchBar.swift in Sources */,
-				FABADCB42E2AC068008F1526 /* AddNewTask.swift in Sources */,
+				FABADCB42E2AC068008F1526 /* NewTaskViewController.swift in Sources */,
 				FAC9B9FA2E2AF371001B2ECE /* TodoCell.swift in Sources */,
 				FABADCAD2E2ABE79008F1526 /* SceneDelegate.swift in Sources */,
 				FAC9B9F02E2ADD31001B2ECE /* TodoTask+CoreDataClass.swift in Sources */,
 				FAC9BF0A2E2BFDC8001B2ECE /* Date.swift in Sources */,
-				FAC9B9F12E2ADD31001B2ECE /* TodoTask+CoreDataProperties.swift in Sources */,
 				FAC9BF0D2E2C4210001B2ECE /* TodoModel.swift in Sources */,
 				FAC9BF0F2E2C43A6001B2ECE /* NetworkManager.swift in Sources */,
 				FAC9B9FC2E2B840E001B2ECE /* CoreDataManager.swift in Sources */,
-				FABADCAE2E2ABE79008F1526 /* MainView.swift in Sources */,
+				FABADCAE2E2ABE79008F1526 /* MainViewController.swift in Sources */,
 				FAC9BF072E2BCF46001B2ECE /* MainViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -40,22 +40,22 @@ class TodoCell: UITableViewCell {
     }()
     
     private let checkmarkImageView: UIImageView = {
-        let image = UIImageView()
-        image.isUserInteractionEnabled = true
-        image.translatesAutoresizingMaskIntoConstraints = false
-        return image
+        let imageView = UIImageView()
+        imageView.isUserInteractionEnabled = true
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
     }()
     
     private lazy var stackLabels: UIStackView = {
-        let stack = UIStackView(arrangedSubviews: [
+        let stackLabels = UIStackView(arrangedSubviews: [
             titleLabel,
             descriptionLabel,
             dateLabel
         ])
-        stack.axis = .vertical
-        stack.spacing = 4
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        return stack
+        stackLabels.axis = .vertical
+        stackLabels.spacing = 4
+        stackLabels.translatesAutoresizingMaskIntoConstraints = false
+        return stackLabels
     }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -65,7 +65,6 @@ class TodoCell: UITableViewCell {
         setupConstraints()
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(checkmarkTappedAction))
-        //        checkmarkImageView.isUserInteractionEnabled = true
         checkmarkImageView.addGestureRecognizer(tap)
     }
     
