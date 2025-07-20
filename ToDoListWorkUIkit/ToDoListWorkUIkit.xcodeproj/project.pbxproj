@@ -21,6 +21,8 @@
 		FAC9B9FC2E2B840E001B2ECE /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC9B9FB2E2B840E001B2ECE /* CoreDataManager.swift */; };
 		FAC9BF072E2BCF46001B2ECE /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC9BF062E2BCF46001B2ECE /* MainViewModel.swift */; };
 		FAC9BF0A2E2BFDC8001B2ECE /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC9BF092E2BFDC8001B2ECE /* Date.swift */; };
+		FAC9BF0D2E2C4210001B2ECE /* TodoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC9BF0C2E2C4210001B2ECE /* TodoModel.swift */; };
+		FAC9BF0F2E2C43A6001B2ECE /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC9BF0E2E2C43A6001B2ECE /* NetworkManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +42,8 @@
 		FAC9B9FB2E2B840E001B2ECE /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		FAC9BF062E2BCF46001B2ECE /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		FAC9BF092E2BFDC8001B2ECE /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
+		FAC9BF0C2E2C4210001B2ECE /* TodoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoModel.swift; sourceTree = "<group>"; };
+		FAC9BF0E2E2C43A6001B2ECE /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,11 +76,11 @@
 		FABADCA72E2ABE79008F1526 /* ToDoListWorkUIkit */ = {
 			isa = PBXGroup;
 			children = (
-				FAC9BF082E2BFDB9001B2ECE /* Extensions */,
 				FABADC9E2E2ABE79008F1526 /* AppDelegate.swift */,
 				FABADCA52E2ABE79008F1526 /* SceneDelegate.swift */,
 				FABADCAF2E2ABE7D008F1526 /* Screens */,
 				FABADCB12E2ABEAE008F1526 /* Views */,
+				FAC9BF082E2BFDB9001B2ECE /* Extensions */,
 				FABADCB22E2ABEBB008F1526 /* NetworkManager */,
 				FABADCBE2E2AD17C008F1526 /* CoreDataManager */,
 				FABADCA02E2ABE79008F1526 /* Info.plist */,
@@ -89,6 +93,7 @@
 		FABADCAF2E2ABE7D008F1526 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				FAC9BF0B2E2C41FC001B2ECE /* Model */,
 				FAC9B9FD2E2BCE85001B2ECE /* MainView */,
 				FAC9B9FE2E2BCEA1001B2ECE /* AddNewTask */,
 			);
@@ -116,6 +121,7 @@
 		FABADCB22E2ABEBB008F1526 /* NetworkManager */ = {
 			isa = PBXGroup;
 			children = (
+				FAC9BF0E2E2C43A6001B2ECE /* NetworkManager.swift */,
 			);
 			path = NetworkManager;
 			sourceTree = "<group>";
@@ -153,6 +159,14 @@
 				FAC9BF092E2BFDC8001B2ECE /* Date.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		FAC9BF0B2E2C41FC001B2ECE /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				FAC9BF0C2E2C4210001B2ECE /* TodoModel.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -237,6 +251,8 @@
 				FAC9B9F02E2ADD31001B2ECE /* TodoTask+CoreDataClass.swift in Sources */,
 				FAC9BF0A2E2BFDC8001B2ECE /* Date.swift in Sources */,
 				FAC9B9F12E2ADD31001B2ECE /* TodoTask+CoreDataProperties.swift in Sources */,
+				FAC9BF0D2E2C4210001B2ECE /* TodoModel.swift in Sources */,
+				FAC9BF0F2E2C43A6001B2ECE /* NetworkManager.swift in Sources */,
 				FAC9B9FC2E2B840E001B2ECE /* CoreDataManager.swift in Sources */,
 				FABADCAE2E2ABE79008F1526 /* MainView.swift in Sources */,
 				FAC9BF072E2BCF46001B2ECE /* MainViewModel.swift in Sources */,
