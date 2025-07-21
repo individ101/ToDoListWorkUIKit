@@ -11,19 +11,22 @@ import CoreData
 class CoreDataManager {
     static let shared = CoreDataManager()
     
-    private init() { }
+    let persistentContainer: NSPersistentContainer
     
-    let persistentContainer: NSPersistentContainer = {
-        let container = NSPersistentContainer(name: "CoreData")
-        container.loadPersistentStores { _, error in
+    private init() {
+        persistentContainer = NSPersistentContainer(name: "CoreData")
+        persistentContainer.loadPersistentStores { [self] _, error in
             if let error {
                 fatalError("Store error:-- \(error)")
             }
-            container.viewContext.automaticallyMergesChangesFromParent = true
-            container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+            self.persistentContainer.viewContext.automaticallyMergesChangesFromParent = true
+            self.persistentContainer.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         }
-        return container
-    }()
+    }
+    
+    init(persistentContainer: NSPersistentContainer) {
+        self.persistentContainer = persistentContainer
+    }
     
     lazy var bgContext: NSManagedObjectContext = {
         let context = persistentContainer.newBackgroundContext()
@@ -54,8 +57,7 @@ class CoreDataManager {
     }
     
     func createTask(title: String, text: String, completion: (() -> Void)? = nil) {
-        bgContext.perform { [weak self] in
-            guard let self else { return }
+        bgContext.perform {
             let task = TodoTask(context: self.bgContext)
             task.id = UUID().uuidString
             task.title = title
@@ -84,28 +86,28 @@ class CoreDataManager {
     }
     
     func toggleCompleted(_ task: TodoTask, completion: (() -> Void)? = nil) {
-            let id = task.objectID
-            bgContext.perform {
-                if let bgTask = try? self.bgContext.existingObject(with: id) as? TodoTask {
-                    bgTask.isCompleted.toggle()
-                    self.save(bg: true, completion: completion)
-                } else {
-                    DispatchQueue.main.async { completion?() }
-                }
+        let id = task.objectID
+        bgContext.perform {
+            if let bgTask = try? self.bgContext.existingObject(with: id) as? TodoTask {
+                bgTask.isCompleted.toggle()
+                self.save(bg: true, completion: completion)
+            } else {
+                DispatchQueue.main.async { completion?() }
             }
         }
+    }
     
     func deleteTask(_ task: TodoTask, completion: (() -> Void)? = nil) {
-            let id = task.objectID
-            bgContext.perform {
-                if let bgTask = try? self.bgContext.existingObject(with: id) {
-                    self.bgContext.delete(bgTask)
-                    self.save(bg: true, completion: completion)
-                } else {
-                    DispatchQueue.main.async { completion?() }
-                }
+        let id = task.objectID
+        bgContext.perform {
+            if let bgTask = try? self.bgContext.existingObject(with: id) {
+                self.bgContext.delete(bgTask)
+                self.save(bg: true, completion: completion)
+            } else {
+                DispatchQueue.main.async { completion?() }
             }
         }
+    }
     
     func searchTasks(query: String, completion: @escaping ([TodoTask]) -> Void) {
         let trimmedQuery = query.trimmingCharacters(in: .whitespacesAndNewlines)
