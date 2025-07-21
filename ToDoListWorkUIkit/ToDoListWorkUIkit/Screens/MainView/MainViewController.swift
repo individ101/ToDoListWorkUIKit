@@ -20,6 +20,22 @@ class MainViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private let taskCountContainer: UIView = {
+        let view = UIView()
+        view.backgroundColor = .systemGray4
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private let taskCountLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .center
+        label.font = .systemFont(ofSize: 16, weight: .regular)
+        label.textColor = .white
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
     lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
         tableView.separatorStyle = .singleLine
@@ -32,7 +48,7 @@ class MainViewController: UIViewController {
         return tableView
     }()
     
-    lazy var addButton: UIButton = {
+    private let addButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "addButton"), for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -44,7 +60,9 @@ class MainViewController: UIViewController {
         title = "Задачи"
         view.addSubview(tableView)
         view.addSubview(searchBar)
-        view.addSubview(addButton)
+        view.addSubview(taskCountContainer)
+        taskCountContainer.addSubview(taskCountLabel)
+        taskCountContainer.addSubview(addButton)
         setupConstraints()
         
         addButton.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
@@ -56,7 +74,6 @@ class MainViewController: UIViewController {
         viewModel.loadFromAPI { [weak self] in
             self?.reloadTableView()
         }
-        
     }
     
     private func setupConstraints() {
@@ -70,10 +87,18 @@ class MainViewController: UIViewController {
             tableView.leftAnchor.constraint(equalTo: view.leftAnchor),
             tableView.rightAnchor.constraint(equalTo: view.rightAnchor),
             
+            taskCountContainer.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            taskCountContainer.leftAnchor.constraint(equalTo: view.leftAnchor),
+            taskCountContainer.rightAnchor.constraint(equalTo: view.rightAnchor),
+            taskCountContainer.heightAnchor.constraint(equalToConstant: 100),
+            
             addButton.widthAnchor.constraint(equalToConstant: 60),
             addButton.heightAnchor.constraint(equalToConstant: 60),
-            addButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            addButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20)
+            addButton.trailingAnchor.constraint(equalTo: taskCountContainer.trailingAnchor, constant: -10),
+            addButton.topAnchor.constraint(equalTo: taskCountContainer.topAnchor),
+            
+            taskCountLabel.centerXAnchor.constraint(equalTo: taskCountContainer.centerXAnchor),
+            taskCountLabel.centerYAnchor.constraint(equalTo: taskCountContainer.centerYAnchor, constant: -20)
         ])
     }
     
@@ -88,10 +113,17 @@ class MainViewController: UIViewController {
     }
     
     private func reloadTableView() {
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
+        DispatchQueue.main.async { [weak self] in
+            self?.tableView.reloadData()
+            self?.updateTaskCountLabel()
         }
     }
+    
+    private func updateTaskCountLabel() {
+        let count = self.viewModel.tasks.count
+        self.taskCountLabel.text = count == 0 ? "Нет задач" : "\(count) задач"
+    }
+    
 }
 
 extension MainViewController: UITableViewDelegate, UITableViewDataSource {
@@ -136,8 +168,50 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         guard editingStyle == .delete else { return }
         viewModel.delete(at: indexPath.row) { [weak self] in
             self?.tableView.deleteRows(at: [indexPath], with: .automatic)
+            self?.updateTaskCountLabel()
         }
     }
+    
+    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        let task = viewModel.tasks[indexPath.row]
+        
+        return UIContextMenuConfiguration(identifier: indexPath as NSIndexPath, previewProvider: nil) { _ in
+            let edit = UIAction(
+                title: "Редактировать",
+                image: UIImage(named: "editIcon")) { [weak self] _ in
+                    let vc = NewTaskViewController()
+                    vc.task = task
+                    vc.onUpdate = { task, title, text in
+                        self?.viewModel.update(task: task, title: title, text: text) {
+                            self?.reloadTableView()
+                        }
+                    }
+                    self?.navigationController?.pushViewController(vc, animated: true)
+                }
+            
+            let share = UIAction(
+                title: "Поделиться",
+                image: UIImage(named: "shareIcon")
+            ) { _ in
+                let text = "\(task.title ?? "")\n\(task.text ?? "")"
+                let vc = UIActivityViewController(activityItems: [text], applicationActivities: nil)
+                self.present(vc, animated: true)
+            }
+            
+            let delete = UIAction(
+                title: "Удалить",
+                image: UIImage(named: "trashIcon"),
+                attributes: .destructive
+            ) { [weak self] _ in
+                self?.viewModel.delete(at: indexPath.row) {
+                    self?.tableView.deleteRows(at: [indexPath], with: .automatic)
+                    self?.updateTaskCountLabel()
+                }
+            }
+            return UIMenu(children: [edit, share, delete])
+        }
+    }
+    
 }
 
 extension MainViewController: UISearchBarDelegate {
